@@ -11,17 +11,17 @@ class ScheduledTasks(
 
     @Scheduled(cron = "0 2 15 * * *")  // Ежедневно в 15:02
     fun sendFirstReminder() {
-        val raidMessage = discordService.getRaidMessage()
-        if (raidMessage != null) {
-            telegramBotService.sendRaidReminder("EliriumPolaris", "Эночку сдаём, господа")
+        val playersWithLostTickets = discordService.extractPlayerNames()
+        if (playersWithLostTickets.isNotEmpty()) {
+            telegramBotService.sendRaidReminder( "\nЭночку на базу, господа! \n", playersWithLostTickets)
         }
     }
 
     @Scheduled(cron = "0 2 16 * * *")  // Ежедневно в 16:02
     fun sendSecondReminder() {
-        val raidMessage = discordService.getRaidMessage()
-        if (raidMessage != null) {
-            telegramBotService.sendRaidReminder("EliriumPolaris", "Энку на стол!")
+        val playersWithLostTickets = discordService.extractPlayerNames()
+        if (playersWithLostTickets.isNotEmpty()) {
+            telegramBotService.sendRaidReminder( "Шутки в сторону, энку на стол!", playersWithLostTickets)
         }
     }
 }
