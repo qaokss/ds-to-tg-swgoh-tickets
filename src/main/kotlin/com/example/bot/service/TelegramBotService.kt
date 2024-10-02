@@ -23,7 +23,7 @@ class TelegramBotService : TelegramLongPollingBot() {
 
 
     override fun getBotUsername(): String = "AlderaanTicketsBot"
-    override fun getBotToken(): String = "7214853329:AAFeyepbtaj__0x0XKF5FakZtmb4ul4uA1A"
+    override fun getBotToken(): String = "<token>"
     override fun onUpdateReceived(update: Update?) {
         if (update?.hasMessage() == true) {
             val messageId = update.message.messageId
