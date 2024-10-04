@@ -28,8 +28,7 @@ class DiscordService(
         val channel: TextChannel = jda.getTextChannelById(hotBotChannelId) ?: return null
         val messages = channel.history.retrievePast(1).complete()
         messages.forEach { println("Full message object: ${it.contentRaw}") }
-      //  return messages.first { it.contentRaw.contains("TICKET WARNING") }?.contentRaw
-        return messages.first { it.contentRaw.contains("TICKET VIOLATIONS") }?.contentRaw
+        return messages.first { it.contentRaw.contains("TICKET WARNING") }?.contentRaw
     }
 
 
