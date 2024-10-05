@@ -2,7 +2,7 @@
 FROM openjdk:17-jdk-slim
 
 WORKDIR /app
-COPY target/swgoh-ds-tg-tickets-bot-0.0.1-SNAPSHOT.jar app.jar
+COPY swgoh-ds-tg-tickets-bot-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 
 
