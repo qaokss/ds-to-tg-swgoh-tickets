@@ -27,7 +27,7 @@ class ScheduledTasks(
         "Первый-первый, я второй, срочно тратим энку, как слышно, приём",
         "Йо, чюваки и чювакессы, шото энки не хватает в нашей копилочке",
         "Энка или жизнь?",
-    ).random()
+    )
 
     val secondReinderTxt = listOf(
         "28 минут до среза. Срочно сдайте энку",
@@ -40,27 +40,27 @@ class ScheduledTasks(
         "Энергия нужна сейчас. У вас осталось 28 минут до среза",
         "Внимание! 28 минут до среза. Не забудьте сдать энку ",
         "Да что ж такое твориться то, баатюшки. 28 минут, а кастрюля с энкой ещё не полная",
-        "Последний шанс потратить энку! Не подведи!",
+        "Последний шанс потратить энку!",
         "Шутки в сторону, энку на стол!"
-    ).random()
+    )
 
-    @Scheduled(cron = "0 2 15 * * *")  // Ежедневно в 15:02
+    @Scheduled(cron = "0 2 12 * * *")  // Ежедневно в 15:02
     fun sendFirstReminder() {
         println("Погнали 15:02")
         val playersWithLostTickets = discordService.extractPlayerNames()
         println("Будем тегать вот этих товарищей$playersWithLostTickets")
         if (playersWithLostTickets.isNotEmpty()) {
-            telegramBotService.sendRaidReminder(firstReminderTxt, playersWithLostTickets)
+            telegramBotService.sendRaidReminder(firstReminderTxt.random(), playersWithLostTickets)
         }
     }
 
-    @Scheduled(cron = "0 2 16 * * *")  // Ежедневно в 16:02
+    @Scheduled(cron = "0 2 13 * * *")  // Ежедневно в 16:02
     fun sendSecondReminder() {
         println("Погнали 16:02")
         val playersWithLostTickets = discordService.extractPlayerNames()
         println("Будем тегать вот этих товарищей$playersWithLostTickets")
         if (playersWithLostTickets.isNotEmpty()) {
-            telegramBotService.sendRaidReminder(secondReinderTxt, playersWithLostTickets)
+            telegramBotService.sendRaidReminder(secondReinderTxt.random(), playersWithLostTickets)
         }
     }
 }
