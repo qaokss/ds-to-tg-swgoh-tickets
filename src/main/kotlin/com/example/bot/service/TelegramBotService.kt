@@ -26,7 +26,7 @@ class TelegramBotService(cfgController: ConfigController) : TelegramLongPollingB
     override fun getBotToken(): String = botToken
     override fun onUpdateReceived(update: Update?) {
         // Проверяем, есть ли сообщение в обновлении
-        println("это пришло в апдейте${update?.message?.text}")
+        println("это пришло в апдейте: ${update?.message?.text}")
         if (update != null && update.hasMessage()) {
             val message = update.message
             // Проверяем, что сообщение пришло из нужного чата
@@ -80,8 +80,8 @@ class TelegramBotService(cfgController: ConfigController) : TelegramLongPollingB
         if (file.exists()) {
             val lines = file.readLines()
             allTelegramNicks = lines.map { line ->
-                val parts = line.split(" ")
-                Player(parts[0], parts[1])
+                val parts = line.split("@")
+                Player(parts[0].trim(), "@${parts[1]}")
             }.toMutableList()
         }
         println("Прочитали из файлика: \n $allTelegramNicks")
@@ -96,7 +96,7 @@ class TelegramBotService(cfgController: ConfigController) : TelegramLongPollingB
         // Мапа с именами и никнеймами
         allTelegramNicks = matches.map {
             val (name, nickname) = it.destructured
-            Player(name.replace("\n", ""), nickname)
+            Player(name.replace("\n", "").trim(), "@$nickname")
         }.toList().toMutableList()
 
         // Выводим список игроков
@@ -110,14 +110,16 @@ class TelegramBotService(cfgController: ConfigController) : TelegramLongPollingB
         if (allTelegramNicks.isEmpty()) {
             loadPlayerNicksFromFile()
         }
-        println("это все тг ники, что остались в памяти: $allTelegramNicks")
         val playersForTagging = playersWithLostTickets
-            .flatMap { pl -> allTelegramNicks.filter { it.name == pl } }
+            .flatMap { pl -> allTelegramNicks.filter { it.name == pl } }.toMutableList()
 
-        if (playersForTagging.size > playersForTagging.size) {
+        // если нового чувака не нашли в списке ников
+        if (playersWithLostTickets.size > playersForTagging.size) {
             val playersWithoutNicks =
-                playersWithLostTickets.filterNot { pl -> playersForTagging.map { it.name }.contains(pl) }
-            playersWithoutNicks.forEach { playersForTagging.plus(Player(it, "")) }
+                playersWithLostTickets.filterNot { pl -> playersForTagging.map { it.name }
+                    .contains(pl) }
+            println("Этих чуваков нет в списке ников, надобно добавить: $playersWithoutNicks")
+           playersWithoutNicks.forEach { playersForTagging.add(Player(it, "")) }
         }
 
         val prettyPlayersForTagging = StringBuilder()
@@ -127,6 +129,7 @@ class TelegramBotService(cfgController: ConfigController) : TelegramLongPollingB
         val fullMessage = "$message $prettyPlayersForTagging"
             .replace("[", "")
             .replace("]", "")
+            .replace("@@", "@")
         println("Это будем отправлять \"\n$fullMessage \"")
         sendMessageToThread(alderaanChatId, chatForTagging, fullMessage)
 
