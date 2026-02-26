@@ -9,6 +9,4 @@ EXPOSE 8080
 # Запускаем приложение
 CMD ["java", "-jar", "myapp.jar"]
 
-# Указываем команду для запуска приложения
-ENTRYPOINT ["java", "-jar", "./app.jar"]
 
