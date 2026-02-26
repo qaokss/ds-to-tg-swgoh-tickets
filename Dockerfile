@@ -1,9 +1,14 @@
 FROM ibmjava:jre
 
-COPY ./swgoh-ds-tg-tickets-bot-0.0.1-SNAPSHOT.jar app.jar
+WORKDIR /app
 COPY ./creds.txt creds.txt
+COPY . /app
+RUN ./gradlew build
+COPY --from=build /app/target/myapp.jar /app/myapp.jar
 EXPOSE 8080
 
+# Запускаем приложение
+CMD ["java", "-jar", "myapp.jar"]
 
 # Указываем команду для запуска приложения
 ENTRYPOINT ["java", "-jar", "./app.jar"]
