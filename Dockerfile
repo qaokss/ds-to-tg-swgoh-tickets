@@ -1,7 +1,6 @@
 FROM ibmjava:jre
 
 COPY ./creds.txt creds.txt
-COPY . /app
 RUN ./gradlew build
 COPY --from=build /app/target/myapp.jar /app/myapp.jar
 EXPOSE 8080
