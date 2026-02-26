@@ -1,6 +1,5 @@
 FROM ibmjava:jre
 
-WORKDIR /app
 COPY ./creds.txt creds.txt
 COPY . /app
 RUN ./gradlew build
