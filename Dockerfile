@@ -4,7 +4,6 @@ COPY ./creds.txt creds.txt
 COPY . /app
 WORKDIR /app
 RUN ./gradlew build --no-daemon --stacktrace --info
-COPY --from=build /app/target/myapp.jar /app/myapp.jar
 EXPOSE 8080
 
 # Запускаем приложение
