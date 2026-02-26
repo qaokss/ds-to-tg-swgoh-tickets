@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM ibmjava:jre
 
 COPY ./swgoh-ds-tg-tickets-bot-0.0.1-SNAPSHOT.jar app.jar
 COPY ./creds.txt creds.txt
