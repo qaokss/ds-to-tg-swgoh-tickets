@@ -32,16 +32,16 @@ class TelegramBotService(cfgController: ConfigController) : TelegramLongPollingB
             // Проверяем, что сообщение пришло из нужного чата
             if (message.chatId == botId ||
                 message.chatId == 439358235L || //Компот
-                message.chatId == 446455795L || // Саня Марек
-                message.messageThreadId == nicknamesThread ||
-                message.chatId == 286682568L || //Гуся
                 message.chatId == 838835251L // Сержант
             ) {
                 // Проверяем, содержит ли сообщение текст
                 if (message.hasText()) {
                     val messageText = message.text
                     // Проверяем, есть ли ключевые слова для списка игроков
-                    if (messageText.contains("Офицеры по ВГ")) {
+                    if (messageText.lowercase().contains("офицеры по вг") ||
+                        messageText.lowercase().contains("участники гильдии") ||
+                        messageText.lowercase().contains("офицерский состав")
+                    ) {
                         // Парсим список игроков
                         allTelegramNicks = getActualTgNicks(messageText)
                         savePlayerNicksToFile()
