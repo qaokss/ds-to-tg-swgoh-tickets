@@ -86,3 +86,11 @@ out/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+### секреты и локальные данные — не коммитить
+creds.txt
+github-macos
+player_nicks.txt
+seen_users.txt
+data/
+.DS_Store

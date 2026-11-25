@@ -1,0 +1,19 @@
+services:
+  # Прокси к API игры — отсюда бот сам берёт, кто сколько энки сдал
+  swgoh-comlink:
+    image: ghcr.io/swgoh-utils/swgoh-comlink:latest
+    container_name: swgoh-comlink
+    restart: always
+    environment:
+      # Любое уникальное имя; не меняй его потом без нужды
+      APP_NAME: alderaan-tickets-bot
+
+  swgoh-app:
+    build: .
+    container_name: swgoh-app
+    restart: always
+    depends_on:
+      - swgoh-comlink
+    volumes:
+      # список ников переживает пересборку контейнера
+      - ./player_nicks.txt:/app/player_nicks.txt

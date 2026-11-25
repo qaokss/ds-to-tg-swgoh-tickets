@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ScheduledTasks(
-    private val discordService: DiscordService,
+    private val comlinkService: ComlinkService,
     private val telegramBotService: TelegramBotService
 ) {
 
@@ -26,32 +26,33 @@ class ScheduledTasks(
     )
 
     var secondReminderTxt = mutableListOf<String>(
-        "28 минут до среза. Срочно сдайте энку",
-        "Последнее китайское предупреждение. Время уходит — 28 минут до среза",
-        "Сдаём купончики, осталось  28 минут до среза",
-        "Напоминаю, что осталось 28 минут до среза купончиков",
-        "Ваш вклад важен — сдайте эночку в ближайшие 28 минут",
+        "30 минут до среза. Срочно сдайте энку",
+        "Последнее китайское предупреждение. Время уходит — полчаса до среза",
+        "Сдаём купончики, осталось 30 минут до среза",
+        "Напоминаю, что осталось полчаса до среза купончиков",
+        "Ваш вклад важен — сдайте эночку в ближайшие 30 минут",
         "Серьёзно, времени мало. Сдайте эночку до среза",
-        "Срочно тратим энку. У вас осталось 28 минут до среза",
-        "Внимание-внимание! 28 минут до среза. Не забудьте сдать энку ",
+        "Срочно тратим энку. У вас осталось 30 минут до среза",
+        "Внимание-внимание! Полчаса до среза. Не забудьте сдать энку",
         "Последний шанс потратить энку!",
         "Шутки в сторону, энку на стол!"
     )
 
-    @Scheduled(cron = "0 2 12 * * *")  // Ежедневно в 15:02
+    // Срез гильдии в 13:30 UTC. Время в cron — UTC.
+    @Scheduled(cron = "0 0 12 * * *", zone = "UTC")  // за 1,5 часа до среза
     fun sendFirstReminder() {
-        println("Погнали 15:02")
-        val playersWithLostTickets = discordService.extractPlayerNames()
+        println("Погнали: 1,5 часа до среза")
+        val playersWithLostTickets = comlinkService.extractPlayerNames()
         println("Будем тегать вот этих товарищей$playersWithLostTickets")
         if (playersWithLostTickets.isNotEmpty()) {
             telegramBotService.sendRaidReminder(firstReminderTxt.random(), playersWithLostTickets)
         }
     }
 
-    @Scheduled(cron = "0 2 13 * * *")  // Ежедневно в 16:02
+    @Scheduled(cron = "0 0 13 * * *", zone = "UTC")  // за 30 минут до среза
     fun sendSecondReminder() {
-        println("Погнали 16:02")
-        val playersWithLostTickets = discordService.extractPlayerNames()
+        println("Погнали: 30 минут до среза")
+        val playersWithLostTickets = comlinkService.extractPlayerNames()
         println("Будем тегать вот этих товарищей$playersWithLostTickets")
         if (playersWithLostTickets.isNotEmpty()) {
             telegramBotService.sendRaidReminder(secondReminderTxt.random(), playersWithLostTickets)
